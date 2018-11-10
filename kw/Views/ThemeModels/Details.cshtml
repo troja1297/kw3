@@ -1,0 +1,102 @@
+﻿@model kw.Models.ViewModels.CommentsInThemeViewModel
+
+
+
+@{
+    ViewData["Title"] = @Html.DisplayNameFor(model => model.Title);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ThemeModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dd>
+            @Html.DisplayNameFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Body)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Body)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+    </dl>
+</div>
+
+
+@foreach (var item in Model.Comments)
+{
+    <script type="text/javascript">
+        $(function () {
+            AddComments(item.User.NormalizedUserName, item.DateTime, item.Text);
+        });
+    </script>
+}
+
+<script>
+    function AddComments(name, date, text) {
+        $("#result1").append("<div>" +
+            "<p>" +
+            name +
+            " | answer date : " +
+            date +
+            "</p>" +
+            "<p>" +
+            $('#text').val() +
+            "</p></div>");
+    }
+</script>
+
+
+<div class="col-md-4">
+    <form asp-controller="ThemeModels" asp-action="CreateComment" method="post" style="display: inline;">
+        @Html.Label("Description", "Add answer")
+        @Html.TextArea("Description", "", 5, 3, new { @class = "form-control", placeholder = "Add your answer", id = "text" })
+        <input type="button" value="AddComment" onclick="AddComment('@Model.Id', '@Model.UserName', '@Model.DateTime')" />
+    </form>
+
+</div>
+<div id="result1">
+    <div id="username"></div>
+    <div id="comment"></div>
+    <div id="date"></div>
+</div>
+
+<script>
+    function AddComment(themeId, name, date) {
+        $.ajax({
+            url: '@Url.Action("CreateComment", "ThemeModels")',
+
+            type: 'POST',
+
+            data: { 'themeId': themeId, 'text': $('#text').val() },
+
+            success: $("#result1").append("<div>" +
+                "<p>" + name + " | answer date : " + date + "</p>" +
+                "<p>" + $('#text').val() + "</p></div>")
+        });
+    }
+</script>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

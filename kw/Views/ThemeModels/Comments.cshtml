@@ -1,0 +1,15 @@
+﻿@model kw.Models.ViewModels.CommentViewModel
+
+@foreach (var item in Model.Comments)
+{
+    
+    <td>
+        @Html.DisplayFor(modelItem => item.User.NormalizedUserName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Text)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.DateTime)
+    </td>
+}
