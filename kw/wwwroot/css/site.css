@@ -12,8 +12,13 @@ body {
     padding-right: 15px;
 }
 
+body > div {
+    display: grid;
+}
+
 .my {
     display: inline-block;
+    border: 4px double black;
 }
 
 /* Carousel */
